@@ -1,12 +1,14 @@
+import { injectable } from 'inversify';
 import { Response, Router } from 'express';
 import IController from '../../interfaces/controller.js';
 import ILogger from '../../interfaces/logger.js';
 import IRequestRoute from '../../interfaces/request-route.js';
 
+@injectable()
 export default abstract class BaseController implements IController {
   private _router: Router;
 
-  constructor(private logger: ILogger) {
+  constructor(protected logger: ILogger) {
     this._router = Router();
   }
 

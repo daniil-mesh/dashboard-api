@@ -1,5 +1,7 @@
+import { injectable } from 'inversify';
 import ILogger from '../../interfaces/logger.js';
 
+@injectable()
 export default class StandardLogger implements ILogger {
   public log(...args: unknown[]): void {
     console.log(this.getTime(), `\x1b[42mLOG\x1b[0m`, ...args);

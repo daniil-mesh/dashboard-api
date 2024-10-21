@@ -1,16 +1,21 @@
+import { Dependency } from '../../enums/dependency.js';
+import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
-import IExceptionFilter from '../../interfaces/exception-filter.js';
+import IFilter from '../../interfaces/exception-filter.js';
 import ILogger from '../../interfaces/logger.js';
+import HttpError from '../errors/http-error.js';
 
-export default class ExceptionFilter implements IExceptionFilter {
-  logger: ILogger;
-
-  constructor(logger: ILogger) {
-    this.logger = logger;
-  }
+@injectable()
+export default class ExceptionFilter implements IFilter {
+  constructor(@inject(Dependency.ILogger) private logger: ILogger) {}
 
   catch(err: Error, req: Request, res: Response, next: NextFunction) {
+    let code: number = 500;
+    if (err instanceof HttpError) {
+      code = err.statusCode;
+    }
+
     this.logger.error(err.message);
-    res.status(500).send({ error: err.message });
+    res.status(code).send({ error: err.message });
   }
 }
