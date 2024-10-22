@@ -3,9 +3,9 @@ import ILogger from '../../interfaces/logger.js';
 
 @injectable()
 export default class NoLogger implements ILogger {
-  public log(...args: unknown[]): void {}
+  public log(..._args: unknown[]): void {}
 
-  public error(...args: unknown[]): void {}
+  public error(..._args: unknown[]): void {}
 
-  public warn(...args: unknown[]): void {}
+  public warn(..._args: unknown[]): void {}
 }

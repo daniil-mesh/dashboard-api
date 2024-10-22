@@ -20,12 +20,12 @@ export default class UserController extends BaseController {
     ]);
   }
 
-  public login(req: Request, res: Response, next: NextFunction): void {
+  public login(_req: Request, res: Response, _next: NextFunction): void {
     this.logger.log('user: login request');
     this.ok(res, 'login');
   }
 
-  public register(req: Request, res: Response, next: NextFunction): void {
+  public register(_req: Request, res: Response, _next: NextFunction): void {
     this.logger.log('user: register request');
     this.created(res, 'register');
   }

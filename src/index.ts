@@ -3,6 +3,7 @@ import { Container, ContainerModule } from 'inversify';
 import { Dependency } from './enums/dependency.js';
 import App from './classes/app.js';
 import ExceptionFilter from './classes/filters/exception-filter.js';
+import IBootstrap from './interfaces/bootstrap.js';
 import IFilter from './interfaces/exception-filter.js';
 import ILogger from './interfaces/logger.js';
 import StandardLogger from './classes/loggers/standard-logger.js';
@@ -15,7 +16,7 @@ const appBindings = new ContainerModule((bind) => {
   bind<UserController>(Dependency.UserController).to(UserController);
 });
 
-function bootstrap() {
+function bootstrap(): IBootstrap {
   const container = new Container();
   container.load(appBindings);
   const app = container.get<App>(Dependency.App);

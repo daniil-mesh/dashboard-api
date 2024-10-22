@@ -15,7 +15,7 @@ export default class StandardLogger implements ILogger {
     console.log(this.getTime(), `\x1b[43mWARN\x1b[0m`, ...args);
   }
 
-  private getTime() {
+  private getTime(): string {
     return new Date().toLocaleString('en-UK', {
       hour12: false,
     });

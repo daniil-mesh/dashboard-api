@@ -16,7 +16,7 @@ export default class App {
   constructor(
     @inject(Dependency.IFilter) private filter: IFilter,
     @inject(Dependency.ILogger) private logger: ILogger,
-    @inject(Dependency.UserController) private userController: UserController
+    @inject(Dependency.UserController) private userController: UserController,
   ) {
     this.express = express();
     this.port = Config.PORT;

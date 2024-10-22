@@ -6,6 +6,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "dev": "nodemon",
+    "eslint:fix": "eslint src/** --fix",
+    "eslint": "eslint src/**",
     "start": "node dist/index.js"
   },
   "repository": {
@@ -19,9 +22,18 @@
   },
   "homepage": "https://github.com/daniil-mesh/dashboard-api#readme",
   "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
-    "typescript": "^5.6.3"
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0"
   },
   "dependencies": {
     "express": "^4.21.1",

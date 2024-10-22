@@ -9,7 +9,7 @@ import HttpError from '../errors/http-error.js';
 export default class ExceptionFilter implements IFilter {
   constructor(@inject(Dependency.ILogger) private logger: ILogger) {}
 
-  catch(err: Error, req: Request, res: Response, next: NextFunction) {
+  catch(err: Error, _req: Request, res: Response, _next: NextFunction): void {
     let code: number = 500;
     if (err instanceof HttpError) {
       code = err.statusCode;
