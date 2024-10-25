@@ -1,4 +1,4 @@
 /.vscode
 /dist
 /node_modules
-/src/config/config.ts
+/src/_config/config.ts
