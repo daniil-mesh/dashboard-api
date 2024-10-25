@@ -1,11 +1,12 @@
 import { Dependency } from '../enums/dependency.js';
 import { inject, injectable } from 'inversify';
+import BodyParser from 'body-parser';
 import { Server } from 'http';
+import Config from '../_config/config.js';
 import express, { Express } from 'express';
-import IFilter from '../interfaces/exception-filter.js';
 import ILogger from '../interfaces/logger.js';
 import UserController from './controllers/user-controller.js';
-import Config from '../_config/config.js';
+import ExceptionFilter from './filters/exception-filter.js';
 
 @injectable()
 export default class App {
@@ -14,7 +15,7 @@ export default class App {
   private server?: Server;
 
   constructor(
-    @inject(Dependency.IFilter) private filter: IFilter,
+    @inject(Dependency.ExceptionFilter) private filter: ExceptionFilter,
     @inject(Dependency.ILogger) private logger: ILogger,
     @inject(Dependency.UserController) private userController: UserController,
   ) {
@@ -23,14 +24,19 @@ export default class App {
   }
 
   public async init(): Promise<void> {
+    this.useMiddleware();
     this.useRoutes();
     this.useFilters();
     this.server = this.express.listen(this.port);
     this.logger.log(`Server running at http://localhost:${this.port}/`);
   }
 
+  private useMiddleware(): void {
+    this.express.use(BodyParser.json());
+  }
+
   private useRoutes(): void {
-    this.express.use('/user', this.userController.router);
+    this.express.use(this.userController.path, this.userController.router);
   }
 
   private useFilters(): void {

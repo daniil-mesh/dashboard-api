@@ -6,6 +6,8 @@ import IRequestRoute from '../../interfaces/request-route.js';
 
 @injectable()
 export default abstract class BaseController implements IController {
+  protected abstract _path: string;
+
   private _router: Router;
 
   constructor(protected logger: ILogger) {
@@ -14,6 +16,10 @@ export default abstract class BaseController implements IController {
 
   public get router(): Router {
     return this._router;
+  }
+
+  public get path(): string {
+    return `/${this._path}`;
   }
 
   protected ok<T>(res: Response, message: T): void {
@@ -28,9 +34,9 @@ export default abstract class BaseController implements IController {
     res.status(code).type('application/json').json(message);
   }
 
-  protected bindRoutes(routes: IRequestRoute[]): void {
+  protected bindRoutes(path: string, routes: IRequestRoute[]): void {
     for (const route of routes) {
-      this.logger.log(`[${route.method}] ${route.path}`);
+      this.logger.log(`${route.method.toUpperCase()} ${path}${route.path}`);
       this.router[route.method](route.path, route.func.bind(this));
     }
   }

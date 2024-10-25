@@ -1,5 +1,5 @@
-const config = {
+const prettierConfig = {
   singleQuote: true,
 };
 
-export default config;
+export default prettierConfig;

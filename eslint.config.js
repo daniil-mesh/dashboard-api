@@ -4,7 +4,7 @@ import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-export default [
+const eslintConfig = [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
@@ -29,3 +29,5 @@ export default [
     },
   },
 ];
+
+export default eslintConfig;
