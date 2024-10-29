@@ -4,18 +4,21 @@ import { NextFunction, Request, Response } from 'express';
 import { BaseController } from './index.js';
 import { Dependency, RequestMethod, UserPath } from '../../enums/index.js';
 import { HttpError } from '../error/index.js';
-import { ILogger } from '../../interfaces/index.js';
+import {
+  ILogger,
+  IUserController,
+  IUserService,
+} from '../../interfaces/index.js';
 import { UserLoginDTO, UserRegisterDTO } from '../dto/index.js';
-import { UserService } from '../services/index.js';
 import { ValidateMiddleware } from '../middlewares/validate-middleware.js';
 
 @injectable()
-export class UserController extends BaseController {
+export class UserController extends BaseController implements IUserController {
   protected _path: string = 'user';
 
   constructor(
     @inject(Dependency.ILogger) logger: ILogger,
-    @inject(Dependency.UserService) private service: UserService,
+    @inject(Dependency.IUserService) private service: IUserService,
   ) {
     super(logger);
     this.bindRoutes(this.path, [

@@ -1,7 +1,5 @@
 import bcrypt from 'bcryptjs';
 
-import Config from '../../_config/config.js';
-
 export class User {
   private _pass?: string;
 
@@ -22,7 +20,7 @@ export class User {
     return this._pass ?? '';
   }
 
-  public async setPass(pass: string): Promise<void> {
-    this._pass = await bcrypt.hash(pass, Config.SALT);
+  public async setPass(pass: string, salt: number): Promise<void> {
+    this._pass = await bcrypt.hash(pass, salt);
   }
 }

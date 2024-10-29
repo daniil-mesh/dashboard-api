@@ -3,25 +3,29 @@ import { Server } from 'http';
 import BodyParser from 'body-parser';
 import express, { Express } from 'express';
 
-import { Dependency } from '../enums/index.js';
-import { ErrorFilter } from './error/index.js';
-import { ILogger } from '../interfaces/index.js';
-import { UserController } from './controllers/index.js';
-import Config from '../_config/config.js';
+import { DataType, Dependency } from '../enums/index.js';
+import {
+  IApp,
+  IConfigService,
+  IFilter,
+  ILogger,
+  IUserController,
+} from '../interfaces/index.js';
 
 @injectable()
-export default class App {
+export default class App implements IApp {
   private express: Express;
   private port: number;
   private server?: Server;
 
   constructor(
-    @inject(Dependency.ExceptionFilter) private filter: ErrorFilter,
+    @inject(Dependency.IFilter) private filter: IFilter,
     @inject(Dependency.ILogger) private logger: ILogger,
-    @inject(Dependency.UserController) private userController: UserController,
+    @inject(Dependency.IUserController) private userController: IUserController,
+    @inject(Dependency.IConfigService) private configService: IConfigService,
   ) {
     this.express = express();
-    this.port = Config.PORT;
+    this.port = this.configService.get('PORT', DataType.Number);
   }
 
   public async init(): Promise<void> {

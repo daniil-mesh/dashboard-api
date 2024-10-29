@@ -1,5 +1,10 @@
+export { IApp } from './app.js';
 export { IBootstrap } from './bootstrap.js';
-export { IController } from './controller.js';
-export { ILogger } from './logger.js';
-export { IMiddleware } from './middleware.js';
-export { IRequestRoute } from './request-route.js';
+export { IConfigService } from './services/config-service.js';
+export { IController } from './controllers/controller.js';
+export { IFilter } from './errors/filter.js';
+export { ILogger } from './loggers/logger.js';
+export { IMiddleware } from './middlewares/middleware.js';
+export { IRequestRoute } from './controllers/request-route.js';
+export { IUserController } from './controllers/user-controller.js';
+export { IUserService } from './services/user-service.js';

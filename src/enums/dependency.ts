@@ -1,9 +1,10 @@
 export const Dependency = {
-  App: Symbol.for('App'),
-  ExceptionFilter: Symbol.for('ExceptionFilter'),
+  IApp: Symbol.for('IApp'),
+  IConfigService: Symbol.for('IConfigService'),
+  IFilter: Symbol.for('IFilter'),
   ILogger: Symbol.for('ILogger'),
-  UserController: Symbol.for('UserController'),
-  UserService: Symbol.for('UserService'),
+  IUserService: Symbol.for('IUserService'),
+  IUserController: Symbol.for('IUserController'),
 } as const;
 
 export type Dependency = (typeof Dependency)[keyof typeof Dependency];

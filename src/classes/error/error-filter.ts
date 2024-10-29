@@ -3,10 +3,10 @@ import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
 
 import { HttpError } from './index.js';
-import { ILogger } from '../../interfaces/index.js';
+import { IFilter, ILogger } from '../../interfaces/index.js';
 
 @injectable()
-export class ErrorFilter {
+export class ErrorFilter implements IFilter {
   constructor(@inject(Dependency.ILogger) private logger: ILogger) {}
 
   catch(err: Error, _req: Request, res: Response, _next: NextFunction): void {
