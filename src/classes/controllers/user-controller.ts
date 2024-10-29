@@ -1,17 +1,16 @@
-import { Dependency } from '../../enums/dependency.js';
 import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
-import { RequestMethod } from '../../enums/request-method.js';
-import { UserPath } from '../../enums/request-path.js';
-import BaseController from './base-controller.js';
-import ILogger from '../../interfaces/logger.js';
-import UserLoginDTO from '../dto/user-login-dto.js';
-import UserRegisterDTO from '../dto/user-register-dto.js';
-import UserService from '../services/user-service.js';
-import HttpError from '../errors/http-error.js';
+
+import { BaseController } from './index.js';
+import { Dependency, RequestMethod, UserPath } from '../../enums/index.js';
+import { HttpError } from '../error/index.js';
+import { ILogger } from '../../interfaces/index.js';
+import { UserLoginDTO, UserRegisterDTO } from '../dto/index.js';
+import { UserService } from '../services/index.js';
+import { ValidateMiddleware } from '../middlewares/validate-middleware.js';
 
 @injectable()
-export default class UserController extends BaseController {
+export class UserController extends BaseController {
   protected _path: string = 'user';
 
   constructor(
@@ -20,32 +19,38 @@ export default class UserController extends BaseController {
   ) {
     super(logger);
     this.bindRoutes(this.path, [
-      { path: UserPath.Login, method: RequestMethod.Post, func: this.login },
+      {
+        path: UserPath.Login,
+        method: RequestMethod.Post,
+        func: this.login,
+        middlewares: [new ValidateMiddleware(UserLoginDTO, logger)],
+      },
       {
         path: UserPath.Register,
         method: RequestMethod.Post,
         func: this.register,
+        middlewares: [new ValidateMiddleware(UserRegisterDTO, logger)],
       },
     ]);
   }
 
   public login(
-    req: Request<object, object, UserLoginDTO>,
+    { body }: Request<object, object, UserLoginDTO>,
     res: Response,
     _next: NextFunction,
   ): void {
-    this.logger.log(`${this._path}: login request`, req.body);
-    this.service.login(req.body);
+    this.logger.log(`${this._path}: login request`, body);
+    this.service.login(body);
     this.ok(res, `${this._path}: login success`);
   }
 
   public async register(
-    req: Request<object, object, UserRegisterDTO>,
+    { body }: Request<object, object, UserRegisterDTO>,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    this.logger.log(`${this._path}: register request`, req.body);
-    const user = await this.service.register(req.body);
+    this.logger.log(`${this._path}: register request`, body);
+    const user = await this.service.register(body);
     if (!user) {
       return next(new HttpError(422, `${this._path}: register error`));
     }

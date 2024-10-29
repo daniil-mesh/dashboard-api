@@ -1,12 +1,13 @@
-import { Dependency } from '../enums/dependency.js';
 import { inject, injectable } from 'inversify';
-import BodyParser from 'body-parser';
 import { Server } from 'http';
-import Config from '../_config/config.js';
+import BodyParser from 'body-parser';
 import express, { Express } from 'express';
-import ILogger from '../interfaces/logger.js';
-import UserController from './controllers/user-controller.js';
-import ExceptionFilter from './filters/exception-filter.js';
+
+import { Dependency } from '../enums/index.js';
+import { ErrorFilter } from './error/index.js';
+import { ILogger } from '../interfaces/index.js';
+import { UserController } from './controllers/index.js';
+import Config from '../_config/config.js';
 
 @injectable()
 export default class App {
@@ -15,7 +16,7 @@ export default class App {
   private server?: Server;
 
   constructor(
-    @inject(Dependency.ExceptionFilter) private filter: ExceptionFilter,
+    @inject(Dependency.ExceptionFilter) private filter: ErrorFilter,
     @inject(Dependency.ILogger) private logger: ILogger,
     @inject(Dependency.UserController) private userController: UserController,
   ) {

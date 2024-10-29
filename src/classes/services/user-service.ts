@@ -1,10 +1,10 @@
 import { injectable } from 'inversify';
-import UserRegisterDTO from '../dto/user-register-dto.js';
-import User from '../entity/user.js';
-import UserLoginDTO from '../dto/user-login-dto.js';
+
+import { UserLoginDTO, UserRegisterDTO } from '../dto/index.js';
+import { User } from '../entity/index.js';
 
 @injectable()
-export default class UserService {
+export class UserService {
   public async register({
     mail,
     name,

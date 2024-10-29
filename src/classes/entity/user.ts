@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
+
 import Config from '../../_config/config.js';
 
-export default class User {
+export class User {
   private _pass?: string;
 
   constructor(

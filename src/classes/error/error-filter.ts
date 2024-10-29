@@ -1,11 +1,12 @@
 import { Dependency } from '../../enums/dependency.js';
 import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
-import ILogger from '../../interfaces/logger.js';
-import HttpError from '../errors/http-error.js';
+
+import { HttpError } from './index.js';
+import { ILogger } from '../../interfaces/index.js';
 
 @injectable()
-export default class ExceptionFilter {
+export class ErrorFilter {
   constructor(@inject(Dependency.ILogger) private logger: ILogger) {}
 
   catch(err: Error, _req: Request, res: Response, _next: NextFunction): void {

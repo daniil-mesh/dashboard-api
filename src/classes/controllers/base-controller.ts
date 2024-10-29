@@ -1,11 +1,10 @@
 import { injectable } from 'inversify';
 import { Response, Router } from 'express';
-import IController from '../../interfaces/controller.js';
-import ILogger from '../../interfaces/logger.js';
-import IRequestRoute from '../../interfaces/request-route.js';
+
+import { IController, ILogger, IRequestRoute } from '../../interfaces/index.js';
 
 @injectable()
-export default abstract class BaseController implements IController {
+export abstract class BaseController implements IController {
   protected abstract _path: string;
 
   private _router: Router;
@@ -37,7 +36,10 @@ export default abstract class BaseController implements IController {
   protected bindRoutes(path: string, routes: IRequestRoute[]): void {
     for (const route of routes) {
       this.logger.log(`${route.method.toUpperCase()} ${path}${route.path}`);
-      this.router[route.method](route.path, route.func.bind(this));
+      const handler = route.func.bind(this);
+      const middlewares = route.middlewares?.map((m) => m.execute.bind(m));
+      const pipeline = middlewares ? [...middlewares, handler] : handler;
+      this.router[route.method](route.path, pipeline);
     }
   }
 }
