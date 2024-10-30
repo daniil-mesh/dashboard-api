@@ -2,8 +2,9 @@ import { Dependency } from '../../enums/dependency.js';
 import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
 
-import { HttpError } from './index.js';
-import { IFilter, ILogger } from '../../interfaces/index.js';
+import { HttpError } from './http-error.js';
+import { IFilter } from '../../interfaces/errors/filter.js';
+import { ILogger } from '../../interfaces/loggers/logger.js';
 
 @injectable()
 export class ErrorFilter implements IFilter {

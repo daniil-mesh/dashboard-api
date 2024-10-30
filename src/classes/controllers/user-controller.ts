@@ -1,15 +1,16 @@
 import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
 
-import { BaseController } from './index.js';
-import { Dependency, RequestMethod, UserPath } from '../../enums/index.js';
-import { HttpError } from '../error/index.js';
-import {
-  ILogger,
-  IUserController,
-  IUserService,
-} from '../../interfaces/index.js';
-import { UserLoginDTO, UserRegisterDTO } from '../dto/index.js';
+import { BaseController } from './base-controller.js';
+import { Dependency } from '../../enums/dependency.js';
+import { HttpError } from '../error/http-error.js';
+import { ILogger } from '../../interfaces/loggers/logger.js';
+import { IUserController } from '../../interfaces/controllers/user-controller.js';
+import { IUserService } from '../../interfaces/services/user-service.js';
+import { RequestMethod } from '../../enums/request-method.js';
+import { UserLoginDTO } from '../../dto/user-login-dto.js';
+import { UserPath } from '../../enums/user-path.js';
+import { UserRegisterDTO } from '../../dto/user-register-dto.js';
 import { ValidateMiddleware } from '../middlewares/validate-middleware.js';
 
 @injectable()
@@ -37,13 +38,16 @@ export class UserController extends BaseController implements IUserController {
     ]);
   }
 
-  public login(
+  public async login(
     { body }: Request<object, object, UserLoginDTO>,
     res: Response,
-    _next: NextFunction,
-  ): void {
-    this.logger.log(`${this._path}: login request`, body);
-    this.service.login(body);
+    next: NextFunction,
+  ): Promise<void> {
+    this.logger.log(`${this._path.toUpperCase()}: login request`, body);
+    const user = await this.service.login(body);
+    if (!user) {
+      return next(new HttpError(401, `${this._path}: login error`));
+    }
     this.ok(res, `${this._path}: login success`);
   }
 
@@ -52,7 +56,7 @@ export class UserController extends BaseController implements IUserController {
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    this.logger.log(`${this._path}: register request`, body);
+    this.logger.log(`${this._path.toUpperCase()}: register request`, body);
     const user = await this.service.register(body);
     if (!user) {
       return next(new HttpError(422, `${this._path}: register error`));

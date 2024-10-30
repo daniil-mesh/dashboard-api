@@ -1,8 +1,10 @@
 import { config, DotenvConfigOutput, DotenvParseOutput } from 'dotenv';
 import { inject, injectable } from 'inversify';
 
-import { IConfigService, ILogger } from '../../interfaces/index.js';
-import { DataType, Dependency } from '../../enums/index.js';
+import { DataType } from '../../enums/data-type.js';
+import { Dependency } from '../../enums/dependency.js';
+import { IConfigService } from '../../interfaces/services/config-service.js';
+import { ILogger } from '../../interfaces/loggers/logger.js';
 
 @injectable()
 export class ConfigService implements IConfigService {
@@ -11,10 +13,10 @@ export class ConfigService implements IConfigService {
   constructor(@inject(Dependency.ILogger) private logger: ILogger) {
     const result: DotenvConfigOutput = config();
     if (result.error) {
-      this.logger.error('Config error');
+      this.logger.error('CONFIG: parse error');
     } else {
       this.config = result.parsed;
-      this.logger.log('Config success');
+      this.logger.log('CONFIG: parse success');
     }
   }
 

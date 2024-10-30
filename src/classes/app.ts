@@ -3,14 +3,14 @@ import { Server } from 'http';
 import BodyParser from 'body-parser';
 import express, { Express } from 'express';
 
-import { DataType, Dependency } from '../enums/index.js';
-import {
-  IApp,
-  IConfigService,
-  IFilter,
-  ILogger,
-  IUserController,
-} from '../interfaces/index.js';
+import { DataType } from '../enums/data-type.js';
+import { Dependency } from '../enums/dependency.js';
+import { IApp } from '../interfaces/app.js';
+import { IConfigService } from '../interfaces/services/config-service.js';
+import { IFilter } from '../interfaces/errors/filter.js';
+import { ILogger } from '../interfaces/loggers/logger.js';
+import { IPrismaService } from '../interfaces/services/prisma-service.js';
+import { IUserController } from '../interfaces/controllers/user-controller.js';
 
 @injectable()
 export default class App implements IApp {
@@ -19,10 +19,11 @@ export default class App implements IApp {
   private server?: Server;
 
   constructor(
+    @inject(Dependency.IConfigService) private configService: IConfigService,
     @inject(Dependency.IFilter) private filter: IFilter,
     @inject(Dependency.ILogger) private logger: ILogger,
+    @inject(Dependency.IPrismaService) private prismaService: IPrismaService,
     @inject(Dependency.IUserController) private userController: IUserController,
-    @inject(Dependency.IConfigService) private configService: IConfigService,
   ) {
     this.express = express();
     this.port = this.configService.get('PORT', DataType.Number);
@@ -32,8 +33,9 @@ export default class App implements IApp {
     this.useMiddleware();
     this.useRoutes();
     this.useFilters();
+    await this.prismaService.connect();
     this.server = this.express.listen(this.port);
-    this.logger.log(`Server running at http://localhost:${this.port}/`);
+    this.logger.log(`APP: server running at http://localhost:${this.port}/`);
   }
 
   private useMiddleware(): void {

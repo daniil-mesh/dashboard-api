@@ -8,7 +8,7 @@ export class User {
     private _name: string,
   ) {}
 
-  get email(): string {
+  get mail(): string {
     return this._mail;
   }
 
@@ -16,11 +16,18 @@ export class User {
     return this._name;
   }
 
-  public async getPass(): Promise<string> {
+  get pass(): string {
     return this._pass ?? '';
   }
 
   public async setPass(pass: string, salt: number): Promise<void> {
     this._pass = await bcrypt.hash(pass, salt);
+  }
+
+  public static async comparePass(
+    pass: string,
+    hash: string,
+  ): Promise<boolean> {
+    return await bcrypt.compare(pass, hash);
   }
 }

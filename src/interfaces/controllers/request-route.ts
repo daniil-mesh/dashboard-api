@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
-import { RequestMethod } from '../../enums/index.js';
-import { IMiddleware } from '../index.js';
+import { IMiddleware } from '../middlewares/middleware.js';
+import { RequestMethod } from '../../enums/request-method.js';
 
 export interface IRequestRoute {
   path: string;

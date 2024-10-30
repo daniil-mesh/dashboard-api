@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { ILogger } from '../../interfaces/index.js';
+import { ILogger } from '../../interfaces/loggers/logger.js';
 
 @injectable()
 export class NoLogger implements ILogger {

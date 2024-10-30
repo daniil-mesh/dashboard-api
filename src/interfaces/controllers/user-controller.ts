@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { IController } from '../index.js';
-import { UserLoginDTO, UserRegisterDTO } from '../../classes/dto/index.js';
+import { IController } from './controller.js';
+import { UserLoginDTO } from '../../dto/user-login-dto.js';
+import { UserRegisterDTO } from '../../dto/user-register-dto.js';
 
 export interface IUserController extends IController {
   login(

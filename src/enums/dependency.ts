@@ -3,8 +3,10 @@ export const Dependency = {
   IConfigService: Symbol.for('IConfigService'),
   IFilter: Symbol.for('IFilter'),
   ILogger: Symbol.for('ILogger'),
-  IUserService: Symbol.for('IUserService'),
+  IPrismaService: Symbol.for('IPrismaService'),
   IUserController: Symbol.for('IUserController'),
+  IUserRepository: Symbol.for('IUserRepository'),
+  IUserService: Symbol.for('IUserService'),
 } as const;
 
 export type Dependency = (typeof Dependency)[keyof typeof Dependency];

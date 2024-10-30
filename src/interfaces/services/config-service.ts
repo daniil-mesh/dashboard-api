@@ -1,4 +1,4 @@
-import { DataType } from '../../enums/index.js';
+import { DataType } from '../../enums/data-type.js';
 
 export interface IConfigService {
   get(key: string, type?: typeof DataType.Number): number;
