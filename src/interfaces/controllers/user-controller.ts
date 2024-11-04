@@ -12,7 +12,13 @@ export interface IUserController extends IController {
   ): void;
 
   register(
-    { body }: Request<object, object, UserRegisterDTO>,
+    req: Request<object, object, UserRegisterDTO>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void>;
+
+  info(
+    req: Request<object, object, UserLoginDTO>,
     res: Response,
     next: NextFunction,
   ): Promise<void>;

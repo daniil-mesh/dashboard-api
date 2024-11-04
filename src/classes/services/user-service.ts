@@ -17,6 +17,18 @@ export class UserService implements IUserService {
     @inject(Dependency.IUserRepository) private userRepository: IUserRepository,
   ) {}
 
+  public async info(mail: string): Promise<UserModel> {
+    return (await this.userRepository.find(mail)) as UserModel;
+  }
+
+  public async login({ mail, pass }: UserLoginDTO): Promise<UserModel | null> {
+    const existedUser = await this.userRepository.find(mail);
+    if (!existedUser || !(await User.comparePass(pass, existedUser.pass))) {
+      return null;
+    }
+    return existedUser;
+  }
+
   public async register({
     mail,
     name,
@@ -35,13 +47,5 @@ export class UserService implements IUserService {
     } catch {
       return null;
     }
-  }
-
-  public async login({ mail, pass }: UserLoginDTO): Promise<UserModel | null> {
-    const existedUser = await this.userRepository.find(mail);
-    if (!existedUser || !(await User.comparePass(pass, existedUser.pass))) {
-      return null;
-    }
-    return existedUser;
   }
 }

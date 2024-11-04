@@ -20,6 +20,7 @@ export class ConfigService implements IConfigService {
     }
   }
 
+  get(key: string): string;
   get(key: string, type: typeof DataType.String): string;
   get(key: string, type: typeof DataType.Number): number;
   get(key: string, type: DataType = DataType.String): number | string {

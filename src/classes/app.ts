@@ -11,6 +11,7 @@ import { IFilter } from '../interfaces/errors/filter.js';
 import { ILogger } from '../interfaces/loggers/logger.js';
 import { IPrismaService } from '../interfaces/services/prisma-service.js';
 import { IUserController } from '../interfaces/controllers/user-controller.js';
+import { AuthMiddleware } from './middlewares/auth-middleware.js';
 
 @injectable()
 export default class App implements IApp {
@@ -40,6 +41,11 @@ export default class App implements IApp {
 
   private useMiddleware(): void {
     this.express.use(BodyParser.json());
+    const authMiddleware = new AuthMiddleware(
+      this.configService.get('SECRET'),
+      this.logger,
+    );
+    this.express.use(authMiddleware.execute.bind(authMiddleware));
   }
 
   private useRoutes(): void {

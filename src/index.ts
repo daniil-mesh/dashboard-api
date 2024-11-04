@@ -25,7 +25,6 @@ const appBindings = new ContainerModule((bind) => {
   bind<IConfigService>(Dependency.IConfigService)
     .to(ConfigService)
     .inSingletonScope();
-  bind<IFilter>(Dependency.IFilter).to(ErrorFilter).inSingletonScope();
   bind<ILogger>(Dependency.ILogger).to(StandardLogger).inSingletonScope();
   bind<IPrismaService>(Dependency.IPrismaService)
     .to(PrismaService)
@@ -33,6 +32,7 @@ const appBindings = new ContainerModule((bind) => {
 });
 
 const userBindings = new ContainerModule((bind) => {
+  bind<IFilter>(Dependency.IFilter).to(ErrorFilter).inSingletonScope();
   bind<IUserController>(Dependency.IUserController)
     .to(UserController)
     .inSingletonScope();
